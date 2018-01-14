@@ -1,0 +1,67 @@
+Problem Statement: The initial co-ordinate of a fighter plane is given which is
+                   supposed to hit a bombing site. The bombing site is moving
+                   and its co-ordinates at 1 second interval are given. If the
+                   velocity of the bomb is 20 kmph and it is always directed
+                   towards the bombing site, determine whether the bomb
+                   will hit the bombing site successfully or not.
+Note: The bomb would be said to successfully hit the target if it is within
+      10km proximity of the target at point of time.
+      
+      import math
+
+coordinate_values = [(80, 0), (90, -2), (99, -5), (108, -9), (116, -15),
+                       (125, -18), (141, -29), (151, -28), (160, -25),
+                       (169, -21), (179, -20), (181, -17)]
+
+Flight_starting_coordinate = (0, 50)
+
+velocity_bomb = 20
+
+z = math.atan(math.tan(math.pi / 2))
+
+def length(m1, m2):
+   
+    #distance between two points
+   
+    return(math.sqrt((m2[1] - m1[1])**2 + (m2[0] - m1[0])**2))
+def angle(m1, m2):
+   
+    #angle between two coordinates
+    
+    try:
+        slope = (m2[1] - m1[1]) / float(m2[0] - m1[0])
+        slope = math.atan(slope)
+    except ZeroDivisionError:
+        #
+        slope = z
+    return(slope)
+
+
+def condition():
+    
+    #The bomb will hit the target if at the end its coordinates are in
+  #a 10km proximity range from the target.
+   
+    bomb_initial = Flight_starting_coordinate  # coordindates of the bomb
+    for i, m in enumerate(coordinate_values):
+        if i >= len(coordinate_values) - 1:
+            print("Bomb didn't hit the target")
+            return(False)
+        # Find direction and new bomb's coordinate(updated)
+        a = angle(bomb_initial, m)
+        x = bomb_initial[0] + (velocity_bomb * 1) * math.cos(a)
+        y = bomb_initial[1] + (velocity_bomb * 1) * math.sin(a)
+        bomb_initial = (x,y)
+
+        #Checking for target hit
+        if length(bomb_initial,
+                              coordinate_values[i + 1]) < 10:
+            print("The fighter plane hits the target and  at a time of t=%ds from "
+                  "initialization" % (i+1))
+            return(True)
+    print("The plane misses the target")
+    return(False)
+
+
+if __name__ == '__main__':
+    condition()
