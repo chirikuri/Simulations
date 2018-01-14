@@ -7,7 +7,7 @@ Problem Statement: The initial co-ordinate of a fighter plane is given which is
 Note: The bomb would be said to successfully hit the target if it is within
       10km proximity of the target at point of time.
       
-      import math
+import math
 
 coordinate_values = [(80, 0), (90, -2), (99, -5), (108, -9), (116, -15),
                        (125, -18), (141, -29), (151, -28), (160, -25),
