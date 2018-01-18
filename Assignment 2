@@ -1,0 +1,75 @@
+%P=REORDER POINT
+%Q=ORDER QUANTITY 
+%D=DEMAND PER DAY 
+%D IS EQUIPROBABLE IN THE RANGE OF 0 AND 99 
+%HENCE D IS A ARRAY OF DIMENSION 100*1 WITH RANDOM INTEGERS BETWEEN 0TO 99
+%S=IN STOCK UNITS
+
+P =[125,125,150,175,175];
+Q=[150,250,250,250,300];
+
+%STOCK OUT COST 
+L_cost = 18;
+
+%ORDERING COST
+O_cost = 75;
+
+
+%CARRYING COST = 0.75
+C_cost = 0.75;
+
+
+D = randi([0,99],180,1);
+
+%IN STOCK UNITS LET IT BE AN ARRAY OF ZEROS THEN WE UPDATE EACH ELEMENT AT
+%THE END OF EACH DAY 
+
+S=115;
+
+counter =-2;
+
+%Let the no. of order is x
+x =0;
+
+%TOTAL COST VECTOR
+T_cost = zeros(5,1);
+
+for j = 1:5
+    
+    for i = 1:180
+
+        if(i> 3 && i == counter + 3)
+            S = S + Q(j);
+        end 
+
+        if (S>D(i))
+            T_cost(j) = T_cost(j) + (-D(i)+S)*C_cost;
+            S=S-D(i);
+
+        else
+            T_cost(j) =T_cost(j) + (D(i)-S)*L_cost;
+            S=0;
+
+        end 
+
+
+
+        if (S <= P(j) && i >= counter + 3)
+                %ORDER IS PLACED if i is greater than counter +3
+
+                T_cost(j) =T_cost(j) + O_cost;
+
+                counter = i;
+                x=x+1;
+         end 
+
+
+    end 
+
+end 
+
+T_cost = transpose(T_cost);
+[minT_cost,I] = min(T_cost);
+
+N = ['THE BEST POLICY WHIHC MINIMIZES THE TOTAL RELEVANT COST IS ' num2str(I(1))];
+disp(N);
